@@ -1,0 +1,40 @@
+{
+  "name": "knowyourteam",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@fontsource/inter": "^5.0.8",
+    "@mui/icons-material": "^5.14.9",
+    "@mui/joy": "^5.0.0-beta.7",
+    "@octokit/core": "^5.0.1",
+    "@octokit/graphql": "^7.0.2",
+    "@tauri-apps/api": "^1.4.0",
+    "axios": "^1.5.1",
+    "graphql": "^16.8.1",
+    "humanize-duration": "^3.30.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.16.0",
+    "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#v1",
+    "tauri-plugin-window-state-api": "github:tauri-apps/tauri-plugin-window-state#v1",
+    "use-context-selector": "^1.4.1"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.4.0",
+    "@types/humanize-duration": "^3.27.1",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.4"
+  }
+}
