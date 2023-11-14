@@ -69,6 +69,10 @@ export default function Teams() {
         });
     }, [team]);
 
+    if (!githubToken) {
+        return null;
+    }
+
     return (
         <FormControl>
             <FormLabel>
