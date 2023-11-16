@@ -54,19 +54,21 @@ export default function Teams() {
         setProgress(() => 0);
         const [organization, slug] = team.split('|||');
 
-        fetchTeamMembers(githubToken, organization, slug).then(members => {
-            drip(members.map(m => [githubToken, m]), fetchAuthorPullRequests, 2, setProgress)
-                .then(results => {
-                    setProgress(() => -1);
-                    const result = results
-                        .sort((a, b) => Date.parse(a.mergedAt) < Date.parse(b.mergedAt) ? 1 : -1)
-                    updatePRs(result);
-                    setTeamName(`${organization}/${slug}`);
-                }).catch((err) => {
-                    setProgress(() => -1);
-                    console.log(err); // TODO refactor it later to show errors in UI
-                });
-        });
+        (async () => {
+            try {
+                const members = await fetchTeamMembers(githubToken, organization, slug);
+                const results = await drip(members.map(m => [githubToken, m]), fetchAuthorPullRequests, 2, setProgress);
+                setProgress(() => -1);
+                const result = results
+                    .sort((a, b) => Date.parse(a.mergedAt) < Date.parse(b.mergedAt) ? 1 : -1)
+                updatePRs(result);
+                setTeamName(`${organization}/${slug}`);
+            } catch (error) {
+                // TODO: error in UI
+            } finally {
+                setProgress(() => -1);
+            }
+        })();
     }, [team]);
 
     if (!githubToken) {
