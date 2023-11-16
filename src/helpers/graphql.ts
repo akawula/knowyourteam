@@ -11,7 +11,6 @@ export interface PullRequest {
     additions: number,
     deletions: number,
     headRefName: string,
-    bodyText: string,
     timeToMerge: string,
     timeToMergeRaw: number,
     JIRA: string,
