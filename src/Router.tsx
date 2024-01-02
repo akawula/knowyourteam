@@ -11,6 +11,7 @@ import ColorSchemeToggle from './components/ColorSchemeToggle';
 import Dashboard from "./Dashboard";
 import Settings from "./Settings";
 import { StoreContextProvider } from './context/StoreContext';
+import Jira from "./Jira";
 
 export default function AppRouter() {
     return (
@@ -58,6 +59,7 @@ export default function AppRouter() {
 
                             <Routes>
                                 <Route path="/" Component={Dashboard} />
+                                <Route path="/jira" Component={Jira} />
                                 <Route path="/settings" Component={Settings} />
                             </Routes>
                         </Box>
