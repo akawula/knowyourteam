@@ -7,13 +7,24 @@ import { Link, useLocation } from 'react-router-dom';
 // icons
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-// import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+import GithubIcon from '@mui/icons-material/GitHub';
 
 import WPElogo from './WPElogo';
 // import { openSidebar } from '../utils';
 
+// import and use store
+import { Store } from "tauri-plugin-store-api";
+import React from 'react';
+const store = new Store(".settings");
+
 export default function FirstSidebar() {
   const location = useLocation();
+
+  const [value, setValue] = React.useState<boolean>(true);
+
+  React.useEffect(() => {
+    store.get<Promise<string>>("githubToken").then((setting) => setValue(!!setting))
+  }, [])
 
   return (
     <Sheet
@@ -58,6 +69,13 @@ export default function FirstSidebar() {
             </ListItemButton>
           </Link>
         </ListItem>
+        {value && <ListItem>
+          <Link to={'/github'}>
+            <ListItemButton selected={location.pathname === '/github'}>
+              <GithubIcon />
+            </ListItemButton>
+          </Link>
+        </ListItem>}
         {/* <ListItem>
           <ListItemButton variant="soft" onClick={() => openSidebar()}>
             <DashboardRoundedIcon />

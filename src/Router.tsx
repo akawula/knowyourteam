@@ -10,6 +10,7 @@ import Header from './components/Header';
 import ColorSchemeToggle from './components/ColorSchemeToggle';
 import Dashboard from "./Dashboard";
 import Settings from "./Settings";
+import Github from "./Github";
 import { StoreContextProvider } from './context/StoreContext';
 
 export default function AppRouter() {
@@ -58,6 +59,7 @@ export default function AppRouter() {
 
                             <Routes>
                                 <Route path="/" Component={Dashboard} />
+                                <Route path="/github" Component={Github} />
                                 <Route path="/settings" Component={Settings} />
                             </Routes>
                         </Box>
