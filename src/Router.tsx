@@ -12,6 +12,7 @@ import Dashboard from "./Dashboard";
 import Settings from "./Settings";
 import Github from "./Github";
 import { StoreContextProvider } from './context/StoreContext';
+import Jira from "./Jira";
 
 export default function AppRouter() {
     return (
@@ -60,6 +61,7 @@ export default function AppRouter() {
                             <Routes>
                                 <Route path="/" Component={Dashboard} />
                                 <Route path="/github" Component={Github} />
+                                <Route path="/jira" Component={Jira} />
                                 <Route path="/settings" Component={Settings} />
                             </Routes>
                         </Box>

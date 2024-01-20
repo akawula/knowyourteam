@@ -76,6 +76,13 @@ export default function FirstSidebar() {
             </ListItemButton>
           </Link>
         </ListItem>}
+        <ListItem>
+          <Link to={'/jira'}>
+            <ListItemButton selected={location.pathname === '/jira'}>
+              <HomeRoundedIcon />
+            </ListItemButton>
+          </Link>
+        </ListItem>
         {/* <ListItem>
           <ListItemButton variant="soft" onClick={() => openSidebar()}>
             <DashboardRoundedIcon />
