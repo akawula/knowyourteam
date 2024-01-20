@@ -165,7 +165,7 @@ export default function Dashboard() {
                 </Grid>
               </CardBlock>
             </Grid>
-            <Grid xs={5} sx={{ p: '2px' }}>
+            <Grid xs={6} sx={{ p: '2px' }}>
               <Avatars prsList={prsList} />
             </Grid>
             <Grid xs={6} sx={{ p: '2px' }}>
