@@ -36,7 +36,7 @@ export default function Jira() {
                     justifyContent: 'space-between',
                 }}
             >
-                <Typography level="h2">Dashboard</Typography>
+                <Typography level="h2">Jira</Typography>
                 <Loading />
             </Box>
         </Box>
