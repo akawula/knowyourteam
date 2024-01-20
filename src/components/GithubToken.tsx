@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Typography, Button, Input, FormControl, FormLabel, Link, List, ListItem, ListItemDecorator, ListItemContent } from '@mui/joy';
+import { Link as RouterLink } from 'react-router-dom';
 // import and use store
 import { Store } from "tauri-plugin-store-api";
 const store = new Store(".settings");
-
 // icons
 import { GitHub } from '@mui/icons-material';
 import FolderCopyIcon from '@mui/icons-material/FolderCopy';
@@ -28,6 +28,8 @@ export default function GithubToken() {
 
         onUpdate();
     }
+
+    const info = value.length ? <RouterLink to='/settings/github'><Link>configure github</Link></RouterLink> : null;
 
     return (
         <React.Fragment>
@@ -58,6 +60,7 @@ export default function GithubToken() {
                 >
                 </Input>
             </FormControl>
+            {info}
         </React.Fragment>
     );
 }
