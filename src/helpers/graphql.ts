@@ -1,6 +1,6 @@
 import { Octokit } from '@octokit/core';
 import humanizeDuration from 'humanize-duration';
-
+import getDb from './sql';
 export interface PullRequest {
     id: string,
     title: string,
@@ -290,6 +290,7 @@ const retryPromise = async (token: string, query: string, args: any, retry: numb
 // Function to fetch pull requests of a specific author created within the past year
 export default async function fetchAuthorPullRequests(token: string, author: string): Promise<any[]> {
     try {
+        const db = await getDb();
         let hasNextPage = true;
         let endCursor = null;
         let allPullRequests: any[] = [];
@@ -311,11 +312,18 @@ export default async function fetchAuthorPullRequests(token: string, author: str
             }
         }
 
-        allPullRequests.map(x => {
+        allPullRequests.map(async x => {
             const diff = calculateDiff(x);
             x.JIRA = findJiraKeys(x);
             x.timeToMerge = humanizeDuration(diff);
             x.timeToMergeRaw = diff;
+            try {
+                await db.execute(`INSERT OR IGNORE INTO prs (id, title, state, url, mergedAt, createdAt, additions, deletions, branchName, authorLogin, authorAvatarUrl, repository, reviewRequestedEventAt, JIRA, timeToMerge, timeToMergeRaw) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`,
+                    [x.id, x.title, x.state, x.url, x.mergedAt, x.createdAt, x.additions, x.deletions, x.headRefName, x.author.login, x.author.avatarUrl, x.repository.name, x.timelineItems.nodes.length && x.timelineItems.nodes[0].createdAt ? x.timelineItems.nodes[0].createdAt : x.createdAt, x.JIRA, x.timeToMerge, x.timeToMergeRaw]);
+            }
+            catch (error) {
+                console.log(error);
+            }
             return x;
         });
 
