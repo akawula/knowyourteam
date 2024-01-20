@@ -1,4 +1,4 @@
-import Database from "tauri-plugin-sqlite-api";
+import Database from "tauri-plugin-sql-api";
 
 async function runMigrations(db: Database): Promise<void> {
     await db.execute(`
@@ -38,11 +38,28 @@ async function runMigrations(db: Database): Promise<void> {
             prID TEXT NOT NULL
         )
     `);
+
+    await db.execute(`
+        CREATE TABLE IF NOT EXISTS organizations (
+            slug TEXT NOT NULL PRIMARY KEY
+        )
+    `);
+
+    await db.execute(`
+        CREATE TABLE IF NOT EXISTS repositories (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            owner TEXT NOT NULL,
+            language TEXT NOT NULL,
+
+            UNIQUE(name,owner)
+        )
+    `);
 }
 
 export default async function getDb(): Promise<Database> {
     // initialize db and check the migration to do.
-    const db = await Database.open('./database.db');
+    const db = await Database.load('sqlite:database.db');
     await runMigrations(db);
 
     return db;

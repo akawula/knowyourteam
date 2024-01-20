@@ -199,6 +199,67 @@ const ORGANIZATIONS_QUERY = `
     }
 `;
 
+const ORGANIZATION_REPOSITORIES_QUERY = `
+        query($organization: String!, $after: String) {
+            organization(login: $organization) {
+                repositories(first: 100, isArchived: false, after: $after) {
+                    nodes {
+                        name
+
+                        primaryLanguage {
+                            name
+                        }
+                    }
+                    pageInfo {
+                    hasNextPage
+                    endCursor
+                }
+                totalCount
+                }
+            }
+        }
+`;
+
+export async function fetchOrganizationRepositories(token: string, organization: string, setProgress: Function): Promise<any[]> {
+    try {
+        setProgress(0);
+        let hasNextPage = true;
+        let endCursor = null;
+        let allRepositories: any[] = [];
+        let i = 0;
+        while (hasNextPage) {
+            const response: any = await retryPromise(token, ORGANIZATION_REPOSITORIES_QUERY, {
+                organization,
+                after: endCursor,
+            });
+
+            const repositories = response.organization.repositories.nodes;
+            endCursor = response.organization.repositories.pageInfo.endCursor;
+            hasNextPage = response.organization.repositories.pageInfo.hasNextPage;
+            const total = response.organization.repositories.totalCount; // 687
+            // we fetch this so we are on 100
+
+            allRepositories = allRepositories.concat(repositories);
+
+            if (!hasNextPage) {
+                setProgress(100);
+                break;
+            }
+
+            setProgress(Math.min(Math.round(((++i * 100) / total) * 100), 100));
+        }
+
+        setProgress(-1);
+        return allRepositories;
+    } catch (error) {
+        throw new Error(`Error fetching organization(${organization}) repositories: ${error}`);
+    }
+    finally {
+        setProgress(-1);
+    }
+}
+
+
 const findJiraKeys = (pr: PullRequest) => {
     const toBeSearched: string[] = [pr.headRefName, pr.title, ...pr.commits.nodes.map((x: Commit) => x.message)];
     let keys: string[] = [];
