@@ -48,6 +48,7 @@ export default function Dashboard() {
     return code;
   }, { additions: 0, deletions: 0 });
 
+  let no_jira_count = 0;
   let no_jira_percentage = 0;
   let no_jira_additions = 0;
   let no_jira_deletions = 0;
@@ -56,6 +57,7 @@ export default function Dashboard() {
       if (current.JIRA === 'NO-JIRA') {
         no_jira_additions += current.additions;
         no_jira_deletions += current.deletions;
+        no_jira_count++;
         return acc + 1;
       }
       return acc;
@@ -151,10 +153,10 @@ export default function Dashboard() {
             <Grid xs={3} sx={{ p: '2px' }}>
               <CardBlock header="NO JIRA PRs %">
                 <Grid container>
-                  <Grid xs={6}>
-                    {Math.round(no_jira_percentage * 100)}%
+                  <Grid xs={7}>
+                    {Math.round(no_jira_percentage * 100)}% ({no_jira_count})
                   </Grid>
-                  <Grid xs={6} container>
+                  <Grid xs={5} container>
                     <Grid xs={12}>
                       <Typography sx={{ mt: '5px', display: 'block', height: '10px !important', lineHeight: '10px !important' }} level="body-xs" display='inline' color='success'>+{no_jira_additions} ({Math.round(no_jira_additions / code.additions * 100)}%)</Typography>
                     </Grid>
