@@ -322,10 +322,9 @@ export default async function fetchAuthorPullRequests(token: string, author: str
             x.timeToMerge = humanizeDuration(diff);
             x.timeToMergeRaw = diff;
             try {
-                await db.execute(`INSERT OR IGNORE INTO prs (id, title, state, url, mergedAt, createdAt, additions, deletions, branchName, authorLogin, authorAvatarUrl, repository, reviewRequestedEventAt, JIRA, timeToMerge, timeToMergeRaw) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`,
-                    [x.id, x.title, x.state, x.url, x.mergedAt, x.createdAt, x.additions, x.deletions, x.headRefName, x.author.login, x.author.avatarUrl, x.repository.name, x.timelineItems.nodes.length && x.timelineItems.nodes[0].createdAt ? x.timelineItems.nodes[0].createdAt : x.createdAt, x.JIRA, x.timeToMerge, x.timeToMergeRaw]);
+                await db.execute(`INSERT OR IGNORE INTO prs (id, title, state, url, mergedAt, createdAt, additions, deletions, branchName, authorLogin, authorAvatarUrl, repositoryName, repositoryOwner, reviewRequestedEventAt, JIRA, timeToMerge, timeToMergeRaw) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)`,
+                    [x.id, x.title, x.state, x.url, x.mergedAt, x.createdAt, x.additions, x.deletions, x.headRefName, x.author.login, x.author.avatarUrl, x.repository.name, x.repository.owner.login, x.timelineItems.nodes.length && x.timelineItems.nodes[0].createdAt ? x.timelineItems.nodes[0].createdAt : x.createdAt, x.JIRA, x.timeToMerge, x.timeToMergeRaw]);
                 x.commits.nodes.map(async (commit: Commit) => {
-                    console.log(commit);
                     await db.execute(`INSERT OR IGNORE INTO commits (id, message, prID) VALUES ($1, $2, $3)`, [commit.id, commit.commit.message, x.id]);
                 });
             }
